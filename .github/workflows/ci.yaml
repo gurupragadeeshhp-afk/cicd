@@ -1,0 +1,20 @@
+name: Github CI pipeline testing the html file 
+on:
+  push:
+    branches:
+      - main
+jobs:
+  validates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: action/checkout@v4
+      - name: Validate HTML file
+        run:
+          if ! command  -v tidy $> /dev/null
+          then
+              echo "tidy could not be found, installing..."
+              sudo apt-get update
+              sudo apt-get  install -y tidy
+          fi
+          tidy -e index.html
